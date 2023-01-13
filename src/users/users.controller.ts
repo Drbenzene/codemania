@@ -4,7 +4,8 @@ import {
   Post,
   Body,
   Get,
-  Param
+  Param,
+  Patch
 } from '@nestjs/common';;
 import { UsersService } from './users.service';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -27,5 +28,9 @@ export class UsersController {
   findPosts(@Param() id: string) {
     return this.usersService.findPosts(id);
   }
-}
 
+  @Patch('follow/:id')
+  follow(@Param() id: string) {
+    return this.usersService.follow(id);
+  }
+}

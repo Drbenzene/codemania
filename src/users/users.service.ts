@@ -111,4 +111,71 @@ export class UsersService {
     }
 
   }
+
+  async follow(id: string): Promise<any> {
+    if (!id) {
+      throw new HttpException('User Id Not Provided', HttpStatus.BAD_REQUEST)
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: String(id)
+      }
+    })
+
+    if (!user) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
+    }
+
+    let followers = user.followers
+    followers++
+
+    await this.prisma.user.update({
+      where: {
+        id: String(id)
+      },
+      data: {
+        followers: followers
+      }
+    })
+
+    return {
+      status: "Success",
+      message: 'User Followed'
+    }
+
+  }
+
+  async unfollow(id: string): Promise<any> {
+    if (!id) {
+      throw new HttpException('User Id Not Provided', HttpStatus.BAD_REQUEST)
+    }
+
+    const user = await this.prisma.user.findUnique({
+      where: {
+        id: String(id)
+      }
+    })
+
+    if (!user) {
+      throw new HttpException('User Not Found', HttpStatus.NOT_FOUND)
+    }
+
+    let followers = user.followers
+    followers--
+
+    await this.prisma.user.update({
+      where: {
+        id: String(id)
+      },
+      data: {
+        followers: followers
+      }
+    })
+
+    return {
+      status: "Success",
+      message: 'User Unfollowed'
+    }
+  }
 }
