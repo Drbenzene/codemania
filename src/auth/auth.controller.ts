@@ -21,3 +21,4 @@ export class AuthController {
     return await this.authService.login(LoginUserDto);
   }
 }
+
